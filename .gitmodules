@@ -1,0 +1,4 @@
+[submodule "m-epics-sis8300"]
+	path = m-epics-sis8300
+	url = https://bitbucket.org/europeanspallationsource/m-epics-sis8300
+	ignore = all
