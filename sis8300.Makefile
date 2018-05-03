@@ -29,10 +29,21 @@
 
 include $(E3_REQUIRE_TOOLS)/driver.makefile
 
-# APP:=calcApp
+APP:=src/main/epics/sis8300App
 # APPDB:=$(APP)/Db
-# APPSRC:=$(APP)/src
+APPSRC:=$(APP)/src
 
+asyn_VERSION:=4270
+
+HEADERS += $(wildcard $(APPSRC)/*.h)
+
+SOURCES += $(APPSRC)/sis8300Device.cpp
+SOURCES += $(APPSRC)/sis8300RegisterChannelGroup.cpp
+SOURCES += $(APPSRC)/sis8300RegisterChannel.cpp
+SOURCES += $(APPSRC)/sis8300AIChannelGroup.cpp
+SOURCES += $(APPSRC)/sis8300AIChannel.cpp
+SOURCES += $(APPSRC)/sis8300AOChannelGroup.cpp
+SOURCES += $(APPSRC)/sis8300AOChannel.cpp
 
 # USR_INCLUDES += -I$(where_am_I)$(APPSRC)
 
@@ -100,7 +111,7 @@ include $(E3_REQUIRE_TOOLS)/driver.makefile
 # USR_CFLAGS   += -DDEBUG_PRINT
 # USR_CPPFLAGS += -DDEBUG_PRINT
 # USR_CPPFLAGS += -DUSE_TYPED_RSET
-# USR_INCLUDES += -I/usr/include/libusb-1.0
+
 # USR_LDFLAGS += -lusb-1.0
 # USR_LDFLAGS += -L /opt/etherlab/lib
 # USR_LDFLAGS += -lethercat
@@ -110,7 +121,8 @@ include $(E3_REQUIRE_TOOLS)/driver.makefile
 ##
 # USR_LIBS += boost_regex
 # USR_LIBS += readline
-# USR_LIBS += xml2
+USR_INCLUDES += -I/usr/include/libxml2
+USR_LIBS += xml2
 
 #
 
