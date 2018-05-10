@@ -29,15 +29,23 @@
 
 include $(E3_REQUIRE_TOOLS)/driver.makefile
 
-APP:=src/main/epics/sis8300App
-APPSRC:=$(APP)/src
-
 ifneq ($(strip $(ASYN_DEP_VERSION)),)
 asyn_VERSION=$(ASYN_DEP_VERSION)
 endif
-asyn_VERSION:=4.27.0
+
+EXCLUDE_ARCHS += linux-ppc64e6500 
+
+APP:=src/main/epics/sis8300App
+APPSRC:=$(APP)/Db
+APPSRC:=$(APP)/src
+
 
 HEADERS += $(wildcard $(APPSRC)/*.h)
+
+# # Disable automatic SOURCES pickup in driver.makefile
+# # since we only need to put headers files into ...
+# #
+# SOURCES +=
 
 SOURCES += $(APPSRC)/sis8300Device.cpp
 SOURCES += $(APPSRC)/sis8300RegisterChannelGroup.cpp
