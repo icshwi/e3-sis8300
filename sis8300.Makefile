@@ -36,16 +36,11 @@ endif
 EXCLUDE_ARCHS += linux-ppc64e6500 
 
 APP:=src/main/epics/sis8300App
-APPSRC:=$(APP)/Db
+APPDB:=$(APP)/Db
 APPSRC:=$(APP)/src
 
 
 HEADERS += $(wildcard $(APPSRC)/*.h)
-
-# # Disable automatic SOURCES pickup in driver.makefile
-# # since we only need to put headers files into ...
-# #
-# SOURCES +=
 
 SOURCES += $(APPSRC)/sis8300Device.cpp
 SOURCES += $(APPSRC)/sis8300RegisterChannelGroup.cpp
@@ -58,7 +53,39 @@ SOURCES += $(APPSRC)/sis8300AOChannel.cpp
 USR_INCLUDES += -I/usr/include/libxml2
 USR_LIBS += xml2
 
-db: 
 
-.PHONY: db 
+
+TEMPLATES += $(wildcard $(APPDB)/*.template)
+
+
+
+EPICS_BASE_HOST_BIN = $(EPICS_BASE)/bin/$(EPICS_HOST_ARCH)
+MSI = $(EPICS_BASE_HOST_BIN)/msi
+
+USR_DBFLAGS += -I . -I ..
+USR_DBFLAGS += -I $(EPICS_BASE)/db
+USR_DBFLAGS += -I $(APPDB)
+
+
+
+SUBS=$(wildcard $(APPDB)/*.substitutions)
+TMPS=$(wildcard $(APPDB)/*.template)
+
+db: $(SUBS) $(TMPS)
+
+$(SUBS):
+	@printf "Inflating database ... %44s >>> %40s \n" "$@" "$(basename $(@)).db"
+	@rm -f  $(basename $(@)).db.d  $(basename $(@)).db
+	@$(MSI) -D $(USR_DBFLAGS) -o $(basename $(@)).db -S $@  > $(basename $(@)).db.d
+	@$(MSI)    $(USR_DBFLAGS) -o $(basename $(@)).db -S $@
+
+$(TMPS):
+	@printf "Inflating database ... %44s >>> %40s \n" "$@" "$(basename $(@)).db"
+	@rm -f  $(basename $(@)).db.d  $(basename $(@)).db
+	@$(MSI) -D $(USR_DBFLAGS) -o $(basename $(@)).db $@  > $(basename $(@)).db.d
+	@$(MSI)    $(USR_DBFLAGS) -o $(basename $(@)).db $@
+
+
+.PHONY: db $(SUBS) $(TMPS)
+
 
