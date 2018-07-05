@@ -15,8 +15,6 @@ E3_MODULE_VERSION:=2.0.0
 # In most case, we don't need to touch the following variables.
 #
 
-ASYN_DEP_VERSION:=4.27.0
-
 E3_MODULE_NAME:=$(EPICS_MODULE_NAME)
 E3_MODULE_SRC_PATH:=m-epics-sis8300
 E3_MODULE_MAKEFILE:=$(EPICS_MODULE_NAME).Makefile
