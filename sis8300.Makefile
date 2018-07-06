@@ -56,6 +56,9 @@ USR_LIBS += xml2
 
 
 TEMPLATES += $(wildcard $(APPDB)/*.template)
+TEMPLATES += $(APPDB)/sis8300.db
+TEMPLATES += $(APPDB)/sis8300Register.db
+TEMPLATES += $(APPDB)/sis8300noAO.db
 
 
 
