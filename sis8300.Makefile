@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018 - Present  European Spallation Source ERIC
+#  Copyright (c) 2018 - 2019  European Spallation Source ERIC
 #
 #  The program is free software: you can redistribute
 #  it and/or modify it under the terms of the GNU General Public License
@@ -19,16 +19,14 @@
 #           Jeong Han Lee
 # email   : joaopaulomartins@esss.se
 #           jeonghan.lee@gmail.com
-# Date    : Saturday, September 15 14:28:16 CEST 2018
-# version : 0.0.2
+# Date    : Tuesday, April  2 16:55:27 CEST 2019
+# version : 0.0.3
 #
 
 
 where_am_I := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 include $(E3_REQUIRE_TOOLS)/driver.makefile
 include $(E3_REQUIRE_CONFIG)/DECOUPLE_FLAGS
-
-EXCLUDE_ARCHS += linux-ppc64e6500 
 
 
 ifneq ($(strip $(ASYN_DEP_VERSION)),)
@@ -48,6 +46,9 @@ ifneq ($(strip $(SIS8300DRV_DEP_VERSION)),)
 sis8300drv_VERSION=$(SIS8300DRV_DEP_VERSION)
 endif
 
+# print cc1plus: warning: unrecognized command line option ‘-Wno-format-truncation’ with lower gcc 7
+USR_CFLAGS   += -Wno-format-truncation
+USR_CPPFLAGS += -Wno-format-truncation
 
 
 APP:=src/main/epics/sis8300App
@@ -65,7 +66,15 @@ SOURCES += $(APPSRC)/sis8300AIChannel.cpp
 SOURCES += $(APPSRC)/sis8300AOChannelGroup.cpp
 SOURCES += $(APPSRC)/sis8300AOChannel.cpp
 
+
+ifeq ($(T_A),linux-ppc64e6500)
+USR_INCLUDES += -I$(SDKTARGETSYSROOT)/usr/include/libxml2
+else ifeq ($(T_A),linux-corei7-poky)
+USR_INCLUDES += -I$(SDKTARGETSYSROOT)/usr/include/libxml2
+else
 USR_INCLUDES += -I/usr/include/libxml2
+endif
+
 USR_LIBS += xml2
 
 
@@ -76,9 +85,6 @@ TEMPLATES += $(APPDB)/sis8300Register.db
 TEMPLATES += $(APPDB)/sis8300noAO.db
 
 
-
-#EPICS_BASE_HOST_BIN = $(EPICS_BASE)/bin/$(EPICS_HOST_ARCH)
-#MSI = $(EPICS_BASE_HOST_BIN)/msi
 
 USR_DBFLAGS += -I . -I ..
 USR_DBFLAGS += -I $(EPICS_BASE)/db
