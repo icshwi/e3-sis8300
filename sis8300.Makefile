@@ -28,6 +28,7 @@ where_am_I := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 include $(E3_REQUIRE_TOOLS)/driver.makefile
 include $(E3_REQUIRE_CONFIG)/DECOUPLE_FLAGS
 
+REQ=scaling
 
 ifneq ($(strip $(ASYN_DEP_VERSION)),)
 asyn_VERSION=$(ASYN_DEP_VERSION)
@@ -45,6 +46,11 @@ endif
 ifneq ($(strip $(SIS8300DRV_DEP_VERSION)),)
 sis8300drv_VERSION=$(SIS8300DRV_DEP_VERSION)
 endif
+
+ifneq ($(strip $(SCALING_DEP_VERSION)),)
+scaling_VERSION=$(SCALING_DEP_VERSION)
+endif
+
 
 # print cc1plus: warning: unrecognized command line option ‘-Wno-format-truncation’ with lower gcc 7
 USR_CFLAGS   += -Wno-format-truncation
