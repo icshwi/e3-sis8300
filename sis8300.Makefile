@@ -57,7 +57,7 @@ USR_CFLAGS   += -Wno-format-truncation -std=c++11
 USR_CPPFLAGS += -Wno-format-truncation -std=c++11
 
 
-APP:=src/main/epics/sis8300App
+APP:=sis8300App
 APPDB:=$(APP)/Db
 APPSRC:=$(APP)/src
 
